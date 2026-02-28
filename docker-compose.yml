@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+
+  aic-api:
+    build: ./services/api
+    container_name: aic-api
+    env_file:
+      - .env
+    networks:
+      - aic-network
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15
+    container_name: aic-postgres
+    environment:
+      POSTGRES_USER: aic
+      POSTGRES_PASSWORD: aic_password
+      POSTGRES_DB: aic_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aic-network
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: aic-redis
+    networks:
+      - aic-network
+    restart: unless-stopped
+
+networks:
+  aic-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
