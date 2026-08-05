@@ -209,3 +209,9 @@ make check                # ruff + mypy --strict + import-linter + pytest
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Target architecture, package layout, milestone plan, session protocol |
 | [`docs/adr/`](docs/adr/) | Architecture Decision Records — the *why*, including rejected alternatives |
 | [`CLAUDE.md`](CLAUDE.md) | Working agreement and the non-negotiable architecture rules |
+
+---
+
+## License
+
+[MIT](LICENSE) © 2026 Umesh Kedimi
