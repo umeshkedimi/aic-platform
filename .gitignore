@@ -1,0 +1,47 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# --- Environments ---
+.venv/
+venv/
+.python-version
+
+# --- Secrets: never commit real config ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# --- Tooling caches ---
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+htmlcov/
+.hypothesis/
+
+# --- Local service state (docker volumes bind-mounted for debugging) ---
+.data/
+*.db
+*.sqlite3
+
+# --- Evaluation artifacts (large, regenerable) ---
+eval/runs/
+eval/reports/
+
+# --- Editors / OS ---
+.idea/
+.vscode/
+!.vscode/extensions.json
+.DS_Store
+
+# --- Claude Code local overrides ---
+.claude/settings.local.json
