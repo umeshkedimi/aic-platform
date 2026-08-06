@@ -1,0 +1,97 @@
+[project]
+name = "enterprise-rag-platform"
+version = "0.1.0"
+description = "Multi-tenant production RAG platform"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.118",
+    "uvicorn[standard]>=0.38",
+    "pydantic>=2.11",
+    "pydantic-settings>=2.9",
+    "structlog>=25.1",
+    "asyncpg>=0.30",
+    "redis>=5.2",
+    "httpx>=0.28",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14",
+    "mypy>=1.19",
+    "import-linter>=2.5",
+    "pytest>=8.4",
+    "pytest-asyncio>=0.26",
+    "asyncpg-stubs>=0.30",
+    "httpx2>=2.9.1",
+]
+
+[tool.uv]
+package = false
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+# ---------------------------------------------------------------------------
+# Ruff — lint + format. One tool instead of black + isort + flake8 + plugins.
+# ---------------------------------------------------------------------------
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",     # pycodestyle / pyflakes
+    "I",                # isort
+    "UP",               # pyupgrade — flags deprecated APIs for the target version
+    "B",                # bugbear — catches real bugs (mutable defaults, etc.)
+    "C4",               # comprehension simplifications
+    "SIM",              # flake8-simplify
+    "RUF",              # ruff-native rules
+    "ASYNC",            # flake8-async — blocking calls in async defs
+    "S",                # flake8-bandit — security lint, subset of full bandit
+    "TID",              # tidy-imports — banned/relative import control
+]
+ignore = [
+    "S101",             # assert is fine in tests and defensive checks
+    "B008",             # FastAPI's Depends()/Query()/Body() defaults are idiomatic, not a bug
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]  # asserts + literal test credentials
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+# ---------------------------------------------------------------------------
+# Mypy — strict. A RAG platform passes user documents through many type
+# boundaries (bytes -> text -> chunks -> vectors); this is where that gets
+# caught before runtime.
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.13"
+strict = true
+plugins = ["pydantic.mypy"]
+warn_unreachable = true
+enable_error_code = ["explicit-override", "truthy-bool", "redundant-expr"]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+markers = [
+    "integration: requires real Postgres/Redis/Qdrant/MinIO via testcontainers",
+]

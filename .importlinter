@@ -1,0 +1,60 @@
+[importlinter]
+root_package = app
+include_external_packages = True
+
+# ---------------------------------------------------------------------------
+# ADR-0001: layers point inward. domain/ is the innermost layer and must not
+# import from any other app.* package — it is the one thing every other layer
+# is allowed to depend on, never the reverse.
+# ---------------------------------------------------------------------------
+[importlinter:contract:layers]
+name = Layered architecture: api -> services -> repositories -> models, domain depends on nothing
+type = layers
+layers =
+    api
+    workers
+    services
+    repositories
+    infrastructure
+    models
+    domain
+containers =
+    app
+
+# ---------------------------------------------------------------------------
+# ADR-0002: langchain must not appear in domain, services, repositories, or
+# models. It may only be imported inside infrastructure/ adapters, where it is
+# converted to our own types at the boundary.
+# ---------------------------------------------------------------------------
+[importlinter:contract:langchain-at-the-edges]
+name = LangChain is only imported inside infrastructure/ adapters
+type = forbidden
+source_modules =
+    app.domain
+    app.services
+    app.repositories
+    app.models
+forbidden_modules =
+    langchain
+    langchain_core
+    langchain_community
+    langchain_text_splitters
+
+# ---------------------------------------------------------------------------
+# domain/ is the innermost layer full stop — independently of the layers
+# contract above, make it explicit that it cannot reach into infrastructure
+# or workers either.
+# ---------------------------------------------------------------------------
+[importlinter:contract:domain-independence]
+name = domain/ imports nothing from app.*
+type = forbidden
+source_modules =
+    app.domain
+forbidden_modules =
+    app.api
+    app.workers
+    app.services
+    app.repositories
+    app.infrastructure
+    app.models
+    app.core

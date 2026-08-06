@@ -9,7 +9,8 @@ dist/
 # --- Environments ---
 .venv/
 venv/
-.python-version
+# .python-version is tracked deliberately — it pins uv to 3.13 rather than
+# whatever the latest interpreter happens to be on a given machine.
 
 # --- Secrets: never commit real config ---
 .env
