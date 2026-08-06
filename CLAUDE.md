@@ -6,8 +6,8 @@ status, and the per-session protocol.
 
 ## Current state
 
-- **Milestone:** M0 (Foundation) — not started
-- **Last completed:** none; repository reset at `ce31f53`
+- **Milestone:** M1 (Domain model & persistence) — not started
+- **Last completed:** M0 (Foundation) at `398ae8e`
 
 ## Working mode
 

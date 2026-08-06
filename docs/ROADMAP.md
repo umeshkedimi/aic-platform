@@ -4,8 +4,8 @@
 > to be completed in one working session, starting from a cold context. Read
 > [How to run a session](#how-to-run-a-session) before starting any milestone.
 
-- **Status:** M0 not started
-- **Last updated:** 2026-08-05
+- **Status:** M0 complete; M1 not started
+- **Last updated:** 2026-08-06
 - **Architecture decisions:** [`docs/adr/`](./adr/)
 
 ---
@@ -165,7 +165,7 @@ point is noted.
 
 | # | Milestone | Sessions | Gate |
 |---|---|---|---|
-| M0 | Foundation & developer experience | 1 | `make check` + `make up` green |
+| M0 | Foundation & developer experience ✅ | 1 | `make check` + `make up` green |
 | M1 | Domain model & persistence | 1–2 ⚠️ | migrations apply, tenant-leak suite passes |
 | M2 | AuthN / AuthZ / audit | 1 | full auth flow + RBAC tested |
 | M3 | Object storage & upload | 1 | `202` + job row + object in MinIO |
