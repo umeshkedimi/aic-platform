@@ -7,7 +7,10 @@ Users upload documents into collections; the platform ingests them through an
 asynchronous, resumable pipeline; queries are answered with cited, streaming
 responses backed by hybrid retrieval and reranking.
 
-> **Status:** in active development — **M0 (Foundation)**, not yet runnable.
+> **Status:** in active development — **M0 (Foundation)** complete, **M1
+> (Domain model & persistence)** not started. The stack runs (`make up` brings
+> up Postgres, Redis, Qdrant, MinIO and the API with passing health checks);
+> there is no domain model, persistence or API surface beyond `/v1/health` yet.
 > The architecture and the 13-milestone plan are complete and reviewed:
 > see [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
@@ -190,15 +193,19 @@ strategy — in [`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## Getting started
 
-Not yet runnable — M0 lands the toolchain, `docker-compose.yml` and the `Makefile`.
-Once it does:
+M0 lands the toolchain, `docker-compose.yml` and the `Makefile` — the stack
+runs today:
 
 ```bash
 cp .env.example .env      # every variable is documented
-make up                   # postgres, redis, qdrant, minio, api
-make migrate              # alembic upgrade head
+make up                   # postgres, redis, qdrant, minio, api — waits for readiness
 make check                # ruff + mypy --strict + import-linter + pytest
 ```
+
+`make up` polls `GET /v1/health/ready` until every dependency (Postgres, Redis,
+Qdrant, MinIO) is reachable. There's no domain model or persistence yet, so
+`make migrate` (Alembic) has nothing to apply until M1 adds the first
+migration.
 
 ---
 
