@@ -9,6 +9,36 @@ status, and the per-session protocol.
 - **Milestone:** M1 (Domain model & persistence) — not started
 - **Last completed:** M0 (Foundation) at `398ae8e`
 
+## Remaining work
+
+One task = one milestone = one session, worked in this order. Full detail
+(architecture, files, concepts, testing, Done-when gate) is in
+[`docs/ROADMAP.md`](docs/ROADMAP.md) §3 — this table is a tracker, not the spec.
+
+| # | Task | Gate | Status |
+|---|---|---|---|
+| M1 | Domain model & persistence | migrations apply; tenant-leak suite passes | not started |
+| M2 | AuthN / AuthZ / audit | full auth flow + RBAC tested | blocked on M1 |
+| M3 | Object storage & upload | `202` + job row + object in MinIO | blocked on M2 |
+| M4 | Async backbone (Celery) | no-op pipeline runs end to end | blocked on M3 |
+| M5 | Extraction & chunking | 5 formats → chunks in Postgres | blocked on M4 |
+| M6 | Embeddings | 2+ providers pass one contract suite; cache hit measured | blocked on M5 |
+| M7 | Vector store & indexing | Qdrant + pgvector pass the same suite | blocked on M6 |
+| M8 | Retrieval pipeline | `POST /search` with hybrid + rerank | blocked on M7 |
+| M9 | LLM layer & RAG chain | streaming cited answers | blocked on M8 |
+| M10 | Observability | one trace spans API → worker → LLM | blocked on M9 |
+| M11 | Evaluation & quality gates | eval gate blocks CI on regression | blocked on M10 |
+| M12 | Kubernetes, Helm, CI/CD, hardening | deployable chart + full pipeline | blocked on M11 |
+
+Milestones marked ⚠️ in the roadmap table (M1, M5, M7, M8, M9, M11, M12) are
+large enough to span two sessions — stop at the documented split point rather
+than compressing the work.
+
+Each session commits incrementally as pieces land (e.g. models → migration →
+repositories → tests), not as one squashed commit at the end. Update this
+table's **Status** column and the **Current state** block above at the end of
+every session.
+
 ## Working mode
 
 This is a mentored build. The user is a strong Python/FastAPI/SQLAlchemy/Postgres
@@ -20,7 +50,8 @@ engineer learning production RAG, LangChain, and AI infrastructure. Therefore:
 4. Production quality only — no TODOs unless explicitly agreed, no tutorial
    shortcuts, no placeholder error handling.
 5. Challenge the user's assumptions. Review their code critically.
-6. One milestone per session; end with the review ritual in ROADMAP §4.
+6. One milestone per session, committed incrementally (multiple commits per
+   session, not one dump at the end); end with the review ritual in ROADMAP §4.
 
 ## Non-negotiable architecture rules
 

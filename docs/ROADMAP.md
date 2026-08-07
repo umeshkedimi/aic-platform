@@ -809,14 +809,18 @@ protocol.
 3. **Code review:** critique the code as if it arrived as someone else's PR.
 4. **Production enhancements:** what a Fortune 500 would additionally require.
 5. Write any new decisions as ADRs.
-6. Update this file's status line and the milestone table.
-7. Commit with a message referencing the milestone.
+6. Update this file's status line and the milestone table, and the tracker in
+   `CLAUDE.md` §Remaining work.
+7. Confirm the final commit of the session references the milestone.
 8. Ask whether to continue to the next milestone.
 
 **Session hygiene**
 - One milestone per session. If a milestone is running long, stop at its split
   point and record where you stopped.
 - Never start the next milestone in the same session as a review.
+- Commit incrementally as reviewable pieces land (e.g. models → migration →
+  repositories → tests) — several commits per session, not one squashed commit
+  at the end.
 
 ---
 
